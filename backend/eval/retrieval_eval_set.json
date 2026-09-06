@@ -1,0 +1,26 @@
+[
+  {
+    "question": "Where is authentication implemented?",
+    "correct_units": ["authenticate_user", "hash_password"]
+  },
+  {
+    "question": "How are passwords hashed?",
+    "correct_units": ["hash_password"]
+  },
+  {
+    "question": "Where is a user looked up by their email?",
+    "correct_units": ["get_user_by_email"]
+  },
+  {
+    "question": "How is a new user saved to the database?",
+    "correct_units": ["save_user"]
+  },
+  {
+    "question": "Where is a session token generated after login?",
+    "correct_units": ["generate_session_token"]
+  },
+  {
+    "question": "Is there any math or averaging logic in this codebase?",
+    "correct_units": ["average", "add"]
+  }
+]
