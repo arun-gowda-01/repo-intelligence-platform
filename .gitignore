@@ -1,0 +1,37 @@
+# --- Secrets: never commit these ---
+.env
+.env.local
+*.key
+
+# --- Python ---
+venv/
+env/
+__pycache__/
+*.pyc
+*.pyo
+.Python
+*.egg-info/
+.pytest_cache/
+.mypy_cache/
+
+# --- Project data (generated at runtime, not source code) ---
+backend/data/
+backend/chroma_data/
+ml/datasets/
+ml/saved_models/
+
+# --- Node / React frontend ---
+node_modules/
+frontend/build/
+frontend/dist/
+.npm/
+
+# --- Editors / OS ---
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# --- Logs ---
+*.log
+*.zip
