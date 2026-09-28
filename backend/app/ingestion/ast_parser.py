@@ -83,23 +83,37 @@ def parse_file(file_path: str) -> ParsedFile:
     return parsed
 
 
-def parse_repository(repo_path: str) -> list[ParsedFile]:
+def parse_repository(repo_path: str, exclude_tests: bool = True) -> list[ParsedFile]:
     """
     Walk a directory tree and parse every .py file found.
     Skips common noise directories (venv, node_modules, .git, etc).
+
+    exclude_tests: when True (the default), also skips test files and
+    test directories. This matters for RAG retrieval quality — test
+    function names (e.g. test_set_basicauth) tend to contain the same
+    keywords a user's question would use, so they out-rank the actual
+    implementation in semantic search unless filtered out. Set to False
+    if you specifically want tests included (e.g. a future "find
+    existing tests for this function" feature).
     """
     SKIP_DIRS = {".git", "venv", ".venv", "node_modules", "__pycache__", "dist", "build"}
+    TEST_DIRS = {"tests", "test"}
     parsed_files = []
 
     for root, dirs, files in os.walk(repo_path):
         dirs[:] = [d for d in dirs if d not in SKIP_DIRS]
+        if exclude_tests:
+            dirs[:] = [d for d in dirs if d not in TEST_DIRS]
         for filename in files:
-            if filename.endswith(".py"):
-                full_path = os.path.join(root, filename)
-                try:
-                    parsed_files.append(parse_file(full_path))
-                except SyntaxError:
-                    # Skip files that don't parse (e.g. Python 2 code, corrupted files)
-                    continue
+            if not filename.endswith(".py"):
+                continue
+            if exclude_tests and (filename.startswith("test_") or filename.endswith("_test.py")):
+                continue
+            full_path = os.path.join(root, filename)
+            try:
+                parsed_files.append(parse_file(full_path))
+            except SyntaxError:
+                # Skip files that don't parse (e.g. Python 2 code, corrupted files)
+                continue
 
     return parsed_files

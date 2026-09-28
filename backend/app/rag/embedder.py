@@ -13,7 +13,7 @@ baseline — that comparison itself is a good thing to report.
 """
 from sentence_transformers import SentenceTransformer
 
-_MODEL_NAME = "all-MiniLM-L6-v2"
+_MODEL_NAME = "flax-sentence-embeddings/st-codesearch-distilroberta-base"
 _model = None
 
 

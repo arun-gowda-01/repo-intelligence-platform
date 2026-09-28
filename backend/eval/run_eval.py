@@ -12,7 +12,8 @@ not just anywhere in the top-k. A correct answer at position 1 scores
 Run with (from inside backend/, with the server already running via
 `uvicorn app.main:app --reload` in another terminal):
 
-    python eval/run_eval.py
+    python eval/run_eval.py                       # uses the default (sample repo) eval set
+    python eval/run_eval.py eval/requests_eval_set.json   # uses a specific eval set
 """
 import json
 import sys
@@ -22,12 +23,12 @@ sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from app.rag.retriever import retrieve
 
-EVAL_SET_PATH = os.path.join(os.path.dirname(__file__), "retrieval_eval_set.json")
+DEFAULT_EVAL_SET_PATH = os.path.join(os.path.dirname(__file__), "retrieval_eval_set.json")
 TOP_K = 5
 
 
-def run_eval():
-    with open(EVAL_SET_PATH) as f:
+def run_eval(eval_set_path: str = DEFAULT_EVAL_SET_PATH):
+    with open(eval_set_path) as f:
         eval_set = json.load(f)
 
     recall_hits = 0
@@ -81,4 +82,5 @@ def run_eval():
 
 
 if __name__ == "__main__":
-    run_eval()
+    path = sys.argv[1] if len(sys.argv) > 1 else DEFAULT_EVAL_SET_PATH
+    run_eval(path)

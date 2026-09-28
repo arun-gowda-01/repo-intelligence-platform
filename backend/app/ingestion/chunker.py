@@ -34,7 +34,7 @@ def build_chunks(parsed_files: list[ParsedFile]) -> list[Chunk]:
             embed_text = unit.source
 
             chunks.append(Chunk(
-                id=f"{unit.file_path}::{unit.name}",
+                id=f"{unit.file_path}::{unit.name}::{unit.start_line}",
                 text=embed_text,
                 file_path=unit.file_path,
                 unit_name=unit.name,
